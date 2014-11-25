@@ -2,6 +2,8 @@
 This is a Kinvey sample app, to location-based search, 3rd-Party location services, Push notifications, and Business Logic with Collection Hooks and Custom Endpoints. 
 
 In particular in addition to showing location-based data, this app allows user actions to trigger push notifications to other users that are near new notes and are interested in certain tags. 
+![](https://github.com/KinveyApps/GeoTag-iOS/raw/master/Screenshots/GeoTag_ss1.png)
+![](https://github.com/KinveyApps/GeoTag-iOS/raw/master/Screenshots/GeoTag_ss2.png)
 
 For more details about location, see the blog post at http://goo.gl/9dyMm.
 For more details about business logic, see http://devcenter.kinvey.com/ios/guides/business-logic.
@@ -9,7 +11,7 @@ For more details about business logic, see http://devcenter.kinvey.com/ios/guide
 ## Using the App
 The app shows a map highlighting the user's current location. The map is annotated with nearby hotels (from the 3rd-paty location service) as well as yours and other user's notes that match your selected tags. 
 
-Tap the "page curl" button to see a list of nearby tags. Selecting a tag will cause the user to subscribe to be notified for new notes with that tag as well as display those notes on the map. 
+Tap the "Tags" button to see a list of nearby tags. Selecting a tag will cause the user to subscribe to be notified for new notes with that tag as well as display those notes on the map. 
 
 To enter a new note, type in the text field. Any word preceded by a `#` will be added as a tag. 
 
@@ -25,12 +27,12 @@ To enable push, you need a push certificate from the Apple developer portal. Upl
 
 To enable Data Integration with this app, just
 
-* Go to the **Locations** Add-On and select a provider. For example, choose "FourSquare" ![Enable Data Integration](https://github.com/KinveyApps/GeoTag-iOS/raw/master/Screenshots/Enable.png "Enable Data Integration")
-* Name the endpoint `hotels` and enter your foursquare credentials. Then press `Create Configuration`. ![Enter Credentials](https://github.com/KinveyApps/GeoTag-iOS/raw/master/Screenshots/Active.png "Enter Credentials")
+* Go to the **New Collection** (Data `+` button), press `New Data Link` and select a provider. For example, choose "FourSquare" ![Enable Data Integration](https://github.com/KinveyApps/GeoTag-iOS/raw/master/Screenshots/Enable.png "Enable Data Integration")
+* Name the data link name `hotels` and enter your foursquare credentials. Then press `Add Data Link`. ![Enter Credentials](https://github.com/KinveyApps/GeoTag-iOS/raw/master/Screenshots/Active.png "Enter Credentials")
 
 ### Set up Collection Hook To Automatically Push to Nearby users
-1. From the `Addons` -> `Data & Storage` -> `Data Store` menu, add a new collection and call it `mapNotes`.
-2. From the `Addons` -> `Business Logic` -> `Collection Hooks` menu, select the `mapNotes` collection in the left menu. 
+1. From the `Data` -> `New Collection` menu, add a new collection and call it `mapNotes`.
+2. From the `Business Logic` -> `Collection Hooks` menu, select the `mapNotes` collection in the left menu. 
 3. Select __`After` every `Save` run this function__ from the javascript area.
 4. Enter the code from [`after_save_mapnotes.js`](https://github.com/KinveyApps/GeoTag-iOS/raw/master/after_save_mapnotes.js) in the code window:
 
@@ -71,7 +73,7 @@ This code does the following:
 
 
 ### Set up Custom Endpoint
-1. From the `Addons` -> `Business Logic` -> `Custom Endpoints` menu, create a new endpoint called `tagsNearMe`.
+1. From the `Business Logic` -> `Endpoints` menu, create a new endpoint called `tagsNearMe`.
 2. Enter the code from [`tagsNearMe.js`](https://github.com/KinveyApps/GeoTag-iOS/raw/master/tagsNearMe.js) in the code window:
 
 ```
@@ -129,6 +131,17 @@ This code does the following:
 
 __NOTE:__ it is important to `complete()` the response in all terminal branches, or the client will timeout waiting for a response. 
 
+####Client usage
+```
+[KCSCustomEndpoints callEndpoint:@"tagsNearMe" params:nil completionBlock:^(id results, NSError *error) {
+    if (results) {
+        //TODO: custom logics
+    } else {
+        //TODO: handle error
+    }
+}];
+```
+
 ## System Requirements
 * Xcode 4.5+
 * iPad/iPhone/iPod Touch
@@ -142,7 +155,7 @@ Support: [support@kinvey.com](http://docs.kinvey.com/mailto:support@kinvey.com)
 
 ## License
 
-Copyright (c) 2013 Kinvey, Inc.
+Copyright (c) 2014 Kinvey, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
