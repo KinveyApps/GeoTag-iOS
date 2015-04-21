@@ -39,12 +39,9 @@
     (void) [[KCSClient sharedClient] initializeKinveyServiceForAppKey:@"<#APP KEY#>"
                                                         withAppSecret:@"<#APP SECRET#>"
                                                          usingOptions:nil];
-
-    [KCSPush initializePushWithPushKey:@"<#PUSH KEY#>"
-                            pushSecret:@"<#PUSH SECRET#>"
-                                  mode:KCS_PUSHMODE_DEVELOPMENT
-                               enabled:YES];
-
+    
+    [KCSPush registerForPush];
+    
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
         self.viewController = [[KGAViewController alloc] initWithNibName:@"KGAViewController_iPhone" bundle:nil];
     } else {
@@ -57,7 +54,10 @@
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-    [[KCSPush sharedPush] application:application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+    [[KCSPush sharedPush] application:application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken completionBlock:^(BOOL success, NSError *error)
+    {
+        //if there is an error, try again later
+    }];
     // Additional registration goes here (if needed)
 }
 
